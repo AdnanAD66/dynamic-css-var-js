@@ -1,76 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic CSS Variables</title>
+  <style>
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 5px;
+    }
+
+    body {
+      text-align: center;
+      background: rgb(120, 120, 158);
+      color: white;
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
+
+    .h1 {
+      color: var(--base);
+    }
+
+    .controls {
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+      max-width: 600px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+      max-width: 100%;
+      height: auto;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .img-wrapper {
+      max-width: 500px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    input[type="range"],
+    input[type="color"] {
+      width: 300px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    
-<h2>Update CSS variables with <span class="h1">JS</span></h2>
 
-<div class="controls">
-<label for="spacing">Spacing</label>
-<input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+  <h2>Update CSS variables with <span class="h1">JS</span></h2>
 
-<label for="blur">Blur</label>
-<input type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+  <div class="controls">
+    <label for="spacing">Spacing</label>
+    <input type="range" name="spacing" min="0" max="100" value="10" data-sizing="px" />
 
-<label for="base">Base</label>
-<input type="color" name="base" value="#ffc600" >
+    <label for="blur">Blur</label>
+    <input type="range" name="blur" min="0" max="25" value="5" data-sizing="px" />
 
-<img src="https://images.unsplash.com/photo-1526779259212-939e64788e3c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZnJlZSUyMGltYWdlc3xlbnwwfHwwfHx8MA%3D%3D">
+    <label for="base">Base Color</label>
+    <input type="color" name="base" value="#ffc600" />
+  </div>
 
-</div>
+  <div class="img-wrapper">
+    <img src="https://images.unsplash.com/photo-1526779259212-939e64788e3c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZnJlZSUyMGltYWdlc3xlbnwwfHwwfHx8MA%3D%3D" />
+  </div>
 
-<style>
+  <script>
+    const inputs = document.querySelectorAll('.controls input');
 
-:root{
-    --base: #ffc600;
-    --spacing: 10px;
-    --blur: 5px;
-}
-
-img{
-    padding: var(--spacing);
-    background: var(--base);
-    filter: blur(var(--blur));
-}
-
-.h1{
-    color: var(--base);
-}
-
-    body{
-        text-align: center;
-        background: rgb(120, 120, 158);
-        color: white;
+    function handleUpdate() {
+      const suffix = this.dataset.sizing || '';
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
     }
 
-    .control{
-        margin-bottom: 50px;
-    }
-
-
-</style>
-
-
-<script>
-
-let inputs = document.querySelectorAll('.controls input');
-
-function handleUpdate() {
-    let suffix = this.dataset.sizing || '';
-    document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
-    
-}
-
-inputs.forEach(input => input.addEventListener('change', handleUpdate));
-inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
-
-
-</script>
-
-
+    inputs.forEach(input => input.addEventListener('input', handleUpdate));
+  </script>
 </body>
 </html>
